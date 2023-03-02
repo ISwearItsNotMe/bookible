@@ -1,59 +1,38 @@
 <script>
-	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcome_fallback from '$lib/images/svelte-welcome.png';
+	export let data;
+	$: ({ users } = data);
 </script>
 
-<svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
-</svelte:head>
-
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcome_fallback} alt="Welcome" />
-			</picture>
-		</span>
-
-		to your new<br />SvelteKit app
-	</h1>
-
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
-
-	<Counter />
-</section>
-
-<style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
-	}
-
-	h1 {
-		width: 100%;
-	}
-
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
-	}
-</style>
+<div class="grid">
+	<div>
+		<h2>Users:</h2>
+		{#each users as user}
+			<article>
+				<header>{user.surname}</header>
+				<ul>
+					<li>{user.name} {user.surname}</li>
+					<li>{user.email}</li>
+					<li>{user.gender == 1 ? "MAN" : "WOMAN"}</li>
+				</ul>
+				<form action="?/deleteUser&id={user.id}">
+					<button class="outline secondary">Delete User</button>
+				</form>
+				<a href="/{user.id}" role="button" class="outline constrast" style="width:100%">Edit User</a>
+			</article>
+		{/each}
+	</div>
+	<form action="?/createUser" method="POST">
+		<h3>New User</h3>
+		<label for="username">Username</label>
+		<input type="text" name="username" id="username" />
+		<label for="name">Name</label>
+		<input type="text" name="name" id="name" />
+		<label for="surname">Surname</label>
+		<input type="text" name="surname" id="surname" />
+		<label for="email">Email</label>
+		<input type="text" name="email" id="email" />
+		<label for="gender">Gender</label>
+		<input type="number" name="gender" id="gender" />
+		<button type="submit">Add User</button>
+	</form>
+</div>

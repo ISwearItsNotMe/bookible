@@ -13,6 +13,7 @@ model list {
   name       String?     @db.VarChar(255)
   created_at DateTime?   @db.Timestamp(0)
   updated_at DateTime?   @db.Timestamp(0)
+  removed    Int?        @db.TinyInt
   user       user?       @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "list_ibfk_1")
   list_book  list_book[] @ignore
 
@@ -31,6 +32,7 @@ model list_book {
 
 model user {
   id         Int       @id @default(autoincrement())
+  username   String?   @db.VarChar(255)
   name       String?   @db.VarChar(255)
   surname    String?   @db.VarChar(255)
   gender     Int?      @db.TinyInt
@@ -38,5 +40,6 @@ model user {
   password   String?   @db.VarChar(255)
   created_at DateTime? @db.Timestamp(0)
   updated_at DateTime? @db.Timestamp(0)
+  removed    Int?      @db.TinyInt
   list       list[]
 }
